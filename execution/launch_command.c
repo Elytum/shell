@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 static char		launch_builtin(t_env *env)
 {
 	void			(*builtin)(struct s_env *env);
@@ -22,7 +24,7 @@ static char		handling_binary(t_env *env, pid_t child, const char *path)
 	
 	if (child == 0)
 	{
-		if (path && execve(path, env->argv_tmp, NULL) == -1) //GOTTA ADD ENV
+		if (path && execve(path, env->argv, NULL) == -1) //GOTTA ADD ENV
 			write(1, execve_error, sizeof(execve_error) - 1);
 		exit(0);
 	}
@@ -70,6 +72,51 @@ static char		unknown_function(t_env *env)
 	return (0);
 }
 
+void			*memrcpy(void *dst, const void *src, size_t len)
+{
+	char		*dst_ptr;
+	char		*src_ptr;
+
+	dst_ptr = (char *)dst + len;
+	src_ptr = (char *)src + len;
+	while (dst_ptr > (char *)dst)
+	{
+		printf("Moving [%x]\n", *src_ptr);
+		*dst_ptr-- = *src_ptr--;
+	}
+	return (dst);
+}
+
+static void		handle_alias(t_env *env)
+{
+	t_alias		*alias = ht_get(env->alias, env->argv[0]);
+	char		error[] = SHELL_NAME": too many arguments to handle alias\n";
+	char		*ptr;
+	size_t		total;
+	char		**argv_ptr;
+
+	if (!alias)
+		return ;
+	if (env->argc + alias->size > sizeof(env->argv))
+	{
+		write(1, error, sizeof(error) - 1);
+		return ;
+	}
+	memcpy(env->argv + alias->size, env->argv + 1, env->argc * sizeof(void *));
+	ptr = alias->string;
+	total = 0;
+	argv_ptr = env->argv;
+	while (total < alias->size)
+	{
+		*argv_ptr++ = ptr;
+		while (*ptr)
+			++ptr;
+		++ptr;
+		++total;
+	}
+	env->argc += alias->size - 1;
+}
+
 void			launch_command(t_env *env)
 {
 	char			ret;
@@ -80,6 +127,7 @@ void			launch_command(t_env *env)
 	while (42)
 	{
 		memcpy(env->argv, env->argv_tmp, sizeof(env->argv));
+		handle_alias(env);
 		if ((ret = launch_builtin(env)))
 		{
 			if (ret == -1)

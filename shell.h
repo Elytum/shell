@@ -17,6 +17,12 @@
 # include <limits.h>
 # include <stdlib.h>
 
+typedef struct		s_alias
+{
+	char			*string;
+	size_t			size;
+}					t_alias;
+
 typedef struct		s_env
 {
 	char			*intro;
