@@ -33,15 +33,18 @@ void			handle_simple_quotes(char **str, size_t *len)
 		return ;
 	}
 
-	printf("Before: [%s], len: %lu", *str, *len - (ptr - *str) - 3);
-	memcpy(*str, *str + 1, *len - (ptr - *str) - 3);
-	printf(" After: [%s]", *str);
-	printf(" new len: %lu", *len - 3);
-	(*str)[*len - 3] = '\0';
-	printf(" After: [%s]\n", *str);
+	// printf("Before: [%s], len: %lu", *str, *len - (ptr - *str) - 3);
+	printf("Before: [%s]", *str);
+	memcpy(*str, *str + 1, *len - (ptr - *str + 1));
+	printf(" after: [%s], ptr: [%s]\n", *str, ptr);
+	// printf(" new len: %lu", *len - 3);
+					// (*str)[*len - 3] = '\0';
+	// printf(" After: [%s]\n", *str);
 
-	*str = ptr + 4;
+	// *str = ptr - 2;
 	*len -= 2;
+	printf("*str: [%s], *len: %zu\n", *str, *len);
+	// (*str)[*len] = '\0';
 }
 
 // void			handle_double_quotes(char **str, size_t *len)
@@ -75,8 +78,8 @@ t_escape		escape_string(char *str)
 			handle_spaces(&str, &len);
 			++escaped.size;
 		}
-		// else if (*str == '\'')
-		// 	handle_simple_quotes(&str, &len);
+		else if (*str == '\'')
+			handle_simple_quotes(&str, &len);
 		// else if (*str == '\"')
 		// 	handle_double_quotes(&str, &len);
 		else
