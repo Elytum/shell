@@ -6,18 +6,18 @@
 #include <stdio.h>
 
 // #define STRING "abc \t \t\t 'd e f'"
-#define STRING "abc     'd e f'"
+#define STRING "abc     'd \te  \t f'"
 
 void			handle_spaces(char **str, size_t *len)
 {
 	char		*ptr;
 
+	**str = '\0';
 	ptr = ++*str;
 	while (*ptr == ' ' || *ptr == '\t')
 		++ptr;
 	memcpy(*str, ptr, *len - (ptr - *str));
-	*len -= ptr - *str;
-	*str = ptr;
+	*len -= ptr - *str + 1;
 }
 
 void			handle_simple_quotes(char **str, size_t *len)
