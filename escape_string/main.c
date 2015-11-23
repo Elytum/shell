@@ -40,7 +40,11 @@ static void		do_put_escaped(char *begin, char *ptr, size_t size)
 
 void			put_escaped(const t_escape escaped)
 {
-	printf("Size: %zu\n", escaped.size);
+	const char	message[] = "Size: ";
+
+	write(1, message, sizeof(message) - 1);
+		//	ft_putnbr(escaped.size);
+	write(1, "\n", 1);
 	if (escaped.size)
 		do_put_escaped(escaped.string, escaped.string, escaped.size);
 }
