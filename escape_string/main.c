@@ -5,11 +5,10 @@
 
 #include <stdio.h>
 
-#define STRING "abc\\ \"d \\b f\" ls"
+#define STRING "begin 'first' se\\cond thi\"r\"d four\\ th fi\\f\\t\\h  \t end"
 
 void			handle_backslash(char **str, size_t *len)
 {
-	printf("Before handle_backslash:\t[%s]\n", *str);
 	if (!(*str)[1])
 	{
 		*str = NULL;
@@ -19,7 +18,6 @@ void			handle_backslash(char **str, size_t *len)
 	(*str)[*len - 1] = '\0';
 	*str += 1;
 	*len -= 2;
-	printf("After  handle_backslash:\t[%s]\n", *str);
 }
 
 static void		do_put_escaped(char *begin, char *ptr, size_t size)
@@ -51,21 +49,18 @@ void			handle_spaces(char **str, size_t *len)
 {
 	char		*ptr;
 
-	printf("Before handle_spaces:\t\t[%s]\n", *str);
 	**str = '\0';
 	ptr = ++*str;
 	while (*ptr == ' ' || *ptr == '\t')
 		++ptr;
 	memcpy(*str, ptr, *len - (ptr - *str));
 	*len -= ptr - *str + 1;
-	printf("After  handle_spaces:\t\t[%s]\n", *str);
 }
 
 void			handle_simple_quotes(char **str, size_t *len)
 {
 	char		*ptr;
 
-	printf("Before handle_simple_quotes:\t[%s]\n", *str);
 	ptr = *str + 1;
 	while (*ptr && *ptr != '\'')
 		++ptr;
@@ -74,12 +69,11 @@ void			handle_simple_quotes(char **str, size_t *len)
 		*str = NULL;
 		return ;
 	}
-	memcpy(*str, *str + 1, *len - (ptr - *str) + 1);
+	memcpy(*str, *str + 1, ptr - *str - 1);
 	memcpy(ptr - 1, ptr + 1, *len - (ptr - *str));
+	(*str)[*len - 1] = '\0';
 	*str = ptr - 1;
-	(*str)[*len - 2] = '\0';
 	*len -= 2;
-	printf("After  handle_simple_quotes:\t[%s]\n", *str);
 }
 
 void			handle_double_quotes(char **str, size_t *len)
@@ -87,7 +81,6 @@ void			handle_double_quotes(char **str, size_t *len)
 
 	char		*ptr;
 
-	printf("Before handle_simple_quotes:\t[%s]\n", *str);
 	ptr = *str + 1;
 	while (*ptr && *ptr != '"')
 	{
@@ -108,23 +101,19 @@ void			handle_double_quotes(char **str, size_t *len)
 		*str = NULL;
 		return ;
 	}
-	printf("\tBefore memcpy 1: [%s]\n", *str);
-	memcpy(*str, *str + 1, *len - (ptr - *str) + 1);
-	printf("\tBefore memcpy 2: [%s]\n", *str);
+	memcpy(*str, *str + 1, ptr - *str - 1);
 	memcpy(ptr - 1, ptr + 1, *len - (ptr - *str));
-	printf("\tAfter memcpies: [%s]\n", *str);
+	(*str)[*len - 1] = '\0';
 	*str = ptr - 1;
-	(*str)[*len - 2] = '\0';
 	*len -= 2;
-	printf("After  handle_simple_quotes:\t[%s]\n", *str);
 }
 
 t_escape		escape_string(char *str)
 {
-	const char	*origin = str;
 	t_escape	escaped;
 	size_t		len;
 
+	escaped.origin = str;
 	escaped.string = str;
 	if (!*escaped.string)
 	{
@@ -139,8 +128,6 @@ t_escape		escape_string(char *str)
 		{
 			handle_spaces(&str, &len);
 			++escaped.size;
-			printf("Space detected in %li\n", str - origin);
-			put_escaped(escaped);
 		}
 		else if (*str == '\'')
 			handle_simple_quotes(&str, &len);
@@ -163,18 +150,17 @@ t_escape		escape_string(char *str)
 	return (escaped);
 }
 
-char			*for_each_escaped(t_escape *escaped)
+void			escaped_reset(t_escape *escaped)
 {
-	char		*ptr;
+	escaped->string = escaped->origin;
+}
 
-	if (escaped->size == 0)
-		return (NULL);
-	ptr = escaped->string;
-	while (*escaped->string)
-		++escaped->string;
-	++escaped->string;
-	--escaped->size;
-	return (ptr);
+void			escaped_free(t_escape *escaped)
+{
+	free(escaped->origin);
+	escaped->origin = NULL;
+	escaped->string = NULL;
+	escaped->size = 0;
 }
 
 int				main(void)
@@ -184,5 +170,9 @@ int				main(void)
 
 	escaped = escape_string(strdup(STRING));
 	put_escaped(escaped);
+	escaped_free(&escaped);
+	put_escaped(escaped);
+	// while ((str = for_each_escaped(&escaped)))
+		// printf("Str: [%s]\n", str);
 	return (0);
 }

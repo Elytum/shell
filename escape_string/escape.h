@@ -6,6 +6,7 @@
 typedef struct		s_escape
 {
 	char			*string;
+	char			*origin;
 	size_t			size;
 }					t_escape;
 
