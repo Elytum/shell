@@ -51,7 +51,7 @@ LIBRARIES:
 	@make -C htable
 
 $(NAME): LIBRARIES $(OBJS)
-	$(CC) $(CCFLAGS) $(INC) $(OBJS) -o $(NAME) $(LIBS) -O3
+	@$(CC) $(CCFLAGS) $(INC) $(OBJS) -o $(NAME) $(LIBS) -O3
 
 %.o: %.c
 	@$(CC) $(CCFLAGS) -c  $(INC) $< -o $@
