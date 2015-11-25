@@ -22,5 +22,4 @@ void			builtin_builtin(t_env *env)
 		write(1, env->argv[0], strlen(env->argv[0]));
 		write(1, "\n", 1);
 	}
-	
 }
