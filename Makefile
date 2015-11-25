@@ -32,7 +32,8 @@ SRCS	=	main.c						\
 			builtins/setenv.c			\
 			builtins/unalias.c			\
 			builtins/unsetenv.c			\
-			builtins/which.c
+			builtins/which.c			\
+			builtins/builtin.c
 
 INC		=	-I./ -I./includes -I./execution -I./builtins -I./htable -I./interpretation
 LIBS	=	htable/htable.a interpretation/interpretation.a
@@ -59,10 +60,9 @@ $(NAME): LIBRARIES $(OBJS)
 clean:
 	@make clean -C interpretation
 	@make clean -C htable
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
 	
 fclean:	clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
-	make

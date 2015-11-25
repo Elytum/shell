@@ -17,5 +17,6 @@ void			builtin_which(t_env *env);
 void			builtin_echo(t_env *env);
 void			builtin_alias(t_env *env);
 void			builtin_unalias(t_env *env);
+void			builtin_builtin(t_env *env);
 
 #endif

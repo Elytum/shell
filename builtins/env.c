@@ -1,8 +1,11 @@
 #include <builtins.h>
 #include <string.h>
 
+#include <stdio.h>
+
 void			builtin_env(t_env *env)
 {
+	printf("CALL TO ENV\n");
 	(void)env;
 	// char		buffer[ENV_TABLE_SIZE * (ENV_TABLE_CONTENT_SIZE + 1) + 1];
 	// size_t		pos;

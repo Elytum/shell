@@ -12,4 +12,5 @@ void			init_builtins(hashtable_t *table)
 	ht_set(table, "echo", &builtin_echo);
 	ht_set(table, "alias", &builtin_alias);
 	ht_set(table, "unalias", &builtin_unalias);
+	ht_set(table, "builtin", &builtin_builtin);
 }
