@@ -1,6 +1,6 @@
 #include <interprete.h>
 
-void		interprete_simple_quote(t_env *env)
+void		interprete_simple_quote(t_interprete *env)
 {
 	env->interprete[env->pos++] = REMOVE;
 	while (env->pos <= env->len)
@@ -16,7 +16,7 @@ void		interprete_simple_quote(t_env *env)
 	env->last_char = SIMPLE_QUOTED;
 }
 
-size_t		len_simple_quote(t_env *env, size_t *pos)
+size_t		len_simple_quote(t_interprete *env, size_t *pos)
 {
 	size_t	size;
 
@@ -30,7 +30,7 @@ size_t		len_simple_quote(t_env *env, size_t *pos)
 	return (size);
 }
 
-void		extract_simple_quote(t_env *env, size_t *pos, char **ptr)
+void		extract_simple_quote(t_interprete *env, size_t *pos, char **ptr)
 {
 	while (env->interprete[*pos] == SIMPLE_QUOTED)
 	{

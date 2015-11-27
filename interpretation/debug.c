@@ -1,7 +1,7 @@
 #include <interprete.h>
 #include <stdio.h>
 
-void		debug_env(t_env *env)
+void		debug_env(t_interprete *env)
 {
 	size_t	position;
 
@@ -42,7 +42,7 @@ void		debug_env(t_env *env)
 		printf("Line is not closed due to a backslash.\n");
 }
 
-void		put_env(t_env *env)
+void		put_interprete(t_interprete *env)
 {
 	size_t	id;
 

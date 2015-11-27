@@ -14,7 +14,7 @@
 
 CC = clang
 NAME = interpretation.a
-CFLAGS = -Wall -Werror -Wextra -pedantic -I./ -Xclang -fcolor-diagnostics -O3 -I../ -I../htable -I../execution
+CFLAGS = -Wall -Werror -Wextra -pedantic -I./ -Xclang -fcolor-diagnostics -g -O3 -I../ -I../htable -I../execution
 SOURCE =	and.c				\
 			back_quotes.c		\
 			background.c		\

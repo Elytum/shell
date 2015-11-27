@@ -3,19 +3,19 @@
 
 #include <stdio.h>
 
-void		do_interprete(t_env *env)
+void		do_interprete(t_interprete *env)
 {
 	env->pos = env->start;
 	while (env->pos <= env->len)
-		env->do_interprete_tab[(int)env->buffer[env->pos]](env);
+		env->do_interprete_tab[(unsigned char)env->buffer[env->pos]](env);
 }
 
-void		do_process(t_env *env)
+void		do_process(t_interprete *env)
 {
 	process_back_quotes(env);
 }
 
-void		do_simplify(t_env *env)
+void		do_simplify(t_interprete *env)
 {
 	size_t			buffer_pos;
 	const size_t	len = env->len;
@@ -41,13 +41,13 @@ void		do_simplify(t_env *env)
 		--env->len;
 }
 
-int			set_arguments(t_env *env)
+int			set_arguments(t_interprete *env)
 {
 	set_argc(env);
 	return (set_argv(env));
 }
 
-char		start_interprete(t_env *env)
+char		start_interprete(t_interprete *env)
 {
 	env->start = 0;
 	env->last_char = '\0';
@@ -64,7 +64,7 @@ char		start_interprete(t_env *env)
 	return (CONTINUE);
 }
 
-char		launch_interprete(t_env *env)
+char		launch_interprete(t_interprete *env)
 {
 	set_arguments(env);
 	if (env->len < env->start -1)

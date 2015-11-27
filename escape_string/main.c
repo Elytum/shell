@@ -5,8 +5,8 @@
 
 #include <stdio.h>
 
-// #define STRING "begin 'first' se\\cond thi\"r\"d four\\ th fi\\f\\t\\h  \t end"
-#define STRING "abc  \t def"
+#define STRING "begin 'first' se\\cond thi\"r\"d four\\ th fi\\f\\t\\h  \t end"
+// #define STRING "abc  \t def"
 
 void			handle_backslash(char **str, size_t *len)
 {
@@ -16,14 +16,14 @@ void			handle_backslash(char **str, size_t *len)
 		return ;
 	}
 
-	// memcpy(*str, *str + 1, *len - 1);
-	// (*str)[*len - 1] = '\0';
-	// *str += 1;
-	// *len -= 2;
+	memcpy(*str, *str + 1, *len - 1);
+	(*str)[*len - 1] = '\0';
+	*str += 1;
+	*len -= 2;
 
-	**str = '\0';
-	*str += 2;
-	--*len;
+	// **str = '\0';
+	// *str += 2;
+	// --*len;
 }
 
 static void		do_put_escaped(char *begin, char *ptr, size_t size)
@@ -76,14 +76,8 @@ void			handle_spaces(char **str, size_t *len)
 	ptr = *str + 1;
 	while (*ptr == ' ' || *ptr == '\t')
 		*ptr++ = '\0';
-
-	// *len -= ptr - *str + 1;
 	*len -= ptr - *str;
-	// FUCKIT
-
 	*str = ptr;
-	// memcpy(*str, ptr, *len - (ptr - *str));
-	// *len -= ptr - *str + 1;
 }
 
 void			handle_simple_quotes(char **str, size_t *len)
@@ -241,6 +235,7 @@ int				main(void)
 	memcpy(str, STRING, sizeof(STRING));
 	escaped = escape_string(str);
 
+	put_escaped(escaped);
 	while ((bidule = for_each_escaped(&escaped)))
 		printf("Str: [%s]\n", bidule);
 

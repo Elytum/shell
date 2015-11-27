@@ -1,6 +1,6 @@
 #include <interprete.h>
 
-void		interprete_back_quote(t_env *env)
+void		interprete_back_quote(t_interprete *env)
 {
 	env->interprete[env->pos++] = REMOVE;
 	while (env->pos <= env->len)
@@ -16,7 +16,7 @@ void		interprete_back_quote(t_env *env)
 	env->last_char = BACK_QUOTED;
 }
 
-void		process_back_quotes(t_env *env) // Actually just ignores it
+void		process_back_quotes(t_interprete *env) // Actually just ignores it
 {
 	char	kind;
 
@@ -31,14 +31,14 @@ void		process_back_quotes(t_env *env) // Actually just ignores it
 	}
 }
 
-size_t		len_back_quote(t_env *env, size_t *pos) // Implement once it can be
+size_t		len_back_quote(t_interprete *env, size_t *pos) // Implement once it can be
 {
 	(void)env;
 	++*pos;
 	return (0);
 }
 
-void		extract_back_quote(t_env *env, size_t *pos, char **ptr) // Implement once it can be
+void		extract_back_quote(t_interprete *env, size_t *pos, char **ptr) // Implement once it can be
 {
 	(void)env;
 	**ptr++ = env->buffer[*pos++];

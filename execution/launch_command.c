@@ -12,7 +12,7 @@ static char		launch_builtin(t_env *env)
 	if (!(builtin = ht_get(env->builtins, env->argv[0])))
 		return (0);
 	builtin(env);
-	if (launch_interprete(env) != CONTINUE)
+	if (launch_interprete(env->interpretation) != CONTINUE)
 		return (-1);
 	return (1);
 }
@@ -30,7 +30,7 @@ static char		handling_binary(t_env *env, pid_t child, const char *path)
 	}
 	else
 	{
-		if (launch_interprete(env) != CONTINUE)
+		if (launch_interprete(env->interpretation) != CONTINUE)
 		{
 			waitpid(child, &stat_loc, 0);
 			return (-1);
@@ -67,7 +67,7 @@ static char		unknown_function(t_env *env)
 	write(1, error, sizeof(error) - 1);
 	write(1, env->argv[0], strlen(env->argv[0]));
 	write(1, "\n", 1);
-	if (launch_interprete(env) != CONTINUE)
+	if (launch_interprete(env->interpretation) != CONTINUE)
 		return (-1);
 	return (0);
 }
@@ -122,11 +122,11 @@ void			launch_command(t_env *env)
 	char			ret;
 
 	refresh_binaries(env->binaries);
-	if (launch_interprete(env) != CONTINUE)
+	if (launch_interprete(env->interpretation) != CONTINUE)
 		return ;
 	while (42)
 	{
-		memcpy(env->argv, env->argv_tmp, sizeof(env->argv));
+		memcpy(env->argv, env->interpretation->argv, sizeof(env->argv));
 		handle_alias(env);
 		if ((ret = launch_builtin(env)))
 		{

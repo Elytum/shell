@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-void		interprete_value(t_env *env)
+void		interprete_value(t_interprete *env)
 {
 	size_t	newpos;
 
@@ -14,17 +14,17 @@ void		interprete_value(t_env *env)
 		return ;
 	}
 	env->interprete[newpos++] = START_LOCAL_VARIABLE;
-	while (env->interprete_value_stop[(int)env->buffer[newpos]])
+	while (env->interprete_value_stop[(unsigned char)env->buffer[newpos]])
 		newpos++;
 	if ((env->pos == 0 || env->interprete[env->pos - 1] == SPACING) &&
-		env->standard_delimiters[(int)env->buffer[newpos]])
+		env->standard_delimiters[(unsigned char)env->buffer[newpos]])
 		memset(env->interprete + env->pos + 1, ALONE_LOCAL_VARIABLE, newpos - env->pos);
 	else
 		memset(env->interprete + env->pos + 1, LOCAL_VARIABLE, newpos - env->pos);
 	env->pos = newpos;
 }
 
-size_t		len_value(t_env *env, size_t *pos)
+size_t		len_value(t_interprete *env, size_t *pos)
 {
 	char	c;
 	char	*tmp;
@@ -45,7 +45,7 @@ size_t		len_value(t_env *env, size_t *pos)
 	return (strlen(tmp));
 }
 
-void		extract_value(t_env *env, size_t *pos, char **ptr)
+void		extract_value(t_interprete *env, size_t *pos, char **ptr)
 {
 	char	c;
 	char	*tmp;

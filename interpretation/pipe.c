@@ -1,6 +1,6 @@
 #include <interprete.h>
 
-void		interprete_pipe(t_env *env)
+void		interprete_pipe(t_interprete *env)
 {
 	if (env->buffer[env->pos + 1] == '|')
 	{

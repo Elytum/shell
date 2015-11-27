@@ -1,7 +1,7 @@
 #include <interprete.h>
 #include <string.h>
 
-void		interprete_double_quote(t_env *env)
+void		interprete_double_quote(t_interprete *env)
 {
 	env->interprete[env->pos++] = REMOVE;
 	while (env->pos <= env->len)
@@ -17,7 +17,7 @@ void		interprete_double_quote(t_env *env)
 			interprete_value(env);
 		else if (env->pos < env->len &&
 			env->buffer[env->pos] == '\\' &&
-			(env->interprete_double_quote_tab[(int)env->buffer[env->pos + 1]]))
+			(env->interprete_double_quote_tab[(unsigned char)env->buffer[env->pos + 1]]))
 			interprete_backslash(env);
 		else
 			env->interprete[env->pos++] = INTERPRETED;
@@ -25,7 +25,7 @@ void		interprete_double_quote(t_env *env)
 	env->last_char = DOUBLE_QUOTED;
 }
 
-size_t		len_double_quote(t_env *env, size_t *pos)
+size_t		len_double_quote(t_interprete *env, size_t *pos)
 {
 	size_t	size;
 
@@ -39,7 +39,7 @@ size_t		len_double_quote(t_env *env, size_t *pos)
 	return (size);
 }
 
-void		extract_double_quote(t_env *env, size_t *pos, char **ptr)
+void		extract_double_quote(t_interprete *env, size_t *pos, char **ptr)
 {
 	while (env->interprete[*pos] == DOUBLE_QUOTED)
 	{

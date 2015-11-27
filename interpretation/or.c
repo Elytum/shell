@@ -1,6 +1,6 @@
 #include <interprete.h>
 
-void		interprete_or(t_env *env)
+void		interprete_or(t_interprete *env)
 {
 	env->last_token = OR;
 	env->buffer[env->pos] = OR;

@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-void			set_argc(t_env *env)
+void			set_argc(t_interprete *env)
 {
 	char	in_word;
 	size_t	pos;
@@ -26,7 +26,7 @@ void			set_argc(t_env *env)
 	}
 }
 
-int			avoid_allocation(t_env *env, size_t *pos, char ***ptr)
+int			avoid_allocation(t_interprete *env, size_t *pos, char ***ptr)
 {
 	size_t		saved_pos;
 	char		tmp_char;
@@ -69,7 +69,7 @@ int			avoid_allocation(t_env *env, size_t *pos, char ***ptr)
 	return (1);
 }
 
-size_t		should_len(t_env *env, size_t *pos, char ***ptr)
+size_t		should_len(t_interprete *env, size_t *pos, char ***ptr)
 {
 	size_t		len;
 	char		c;
@@ -92,7 +92,7 @@ size_t		should_len(t_env *env, size_t *pos, char ***ptr)
 	return len;
 }
 
-void		extract_content(t_env *env, size_t pos, char *ptr)
+void		extract_content(t_interprete *env, size_t pos, char *ptr)
 {
 	char		c;
 	const char	error[] = "extract_content id too big\n";
@@ -111,14 +111,14 @@ void		extract_content(t_env *env, size_t pos, char *ptr)
 	*ptr = '\0';
 }
 
-int			set_argv(t_env *env)
+int			set_argv(t_interprete *env)
 {
 	size_t	pos;
 	size_t	tmp_pos;
 	size_t	len;
 	char	**ptr;
 
-	ptr = env->argv_tmp;
+	ptr = env->argv;
 	env->error = NO_ERROR;
 	pos = env->start;
 	while (pos < env->len && env->interprete[pos] != DELIMITER)

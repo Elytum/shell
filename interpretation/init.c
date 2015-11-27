@@ -4,7 +4,25 @@
 #include <stdio.h>
 #include <macro.h>
 
-void		init_do_interprete_tab(t_env *env)
+#include <string.h>
+
+t_interprete		*init_interpretation(void)
+{
+	t_interprete *env;
+
+	if (!(env = (t_interprete *)malloc(sizeof(t_interprete))))
+		return (NULL);
+	init_do_interprete_tab(env);
+	init_interprete_value_stop(env);
+	init_standard_delimiters(env);
+	init_spaces(env);
+	init_should_len_tab(env);
+	init_extract_content_tab(env);
+	env->argv_pool_size = 0;
+	return (env);
+}
+
+void		init_do_interprete_tab(t_interprete *env)
 {
 	unsigned int i;
 
@@ -25,7 +43,7 @@ void		init_do_interprete_tab(t_env *env)
 	env->do_interprete_tab['|'] =  &interprete_pipe;
 }
 
-void		init_interprete_value_stop(t_env *env)
+void		init_interprete_value_stop(t_interprete *env)
 {
 	memset(env->interprete_value_stop, 1, sizeof(env->interprete_value_stop));
 	env->interprete_value_stop['\''] = 0;
@@ -39,33 +57,4 @@ void		init_interprete_value_stop(t_env *env)
 	env->interprete_value_stop[';'] = 0;
 	env->interprete_value_stop['|'] = 0;
 	env->interprete_value_stop['&'] = 0;
-}
-
-void		init_standard_delimiters(t_env *env)
-{
-	memset(env->standard_delimiters, 0, sizeof(env->standard_delimiters));
-	env->standard_delimiters[' '] = 1;
-	env->standard_delimiters['\t'] = 1;
-	env->standard_delimiters['\0'] = 1;
-	env->standard_delimiters[';'] = 1;
-	env->standard_delimiters['|'] = 1;
-	env->standard_delimiters['&'] = 1;
-}
-
-void		init_spaces(t_env *env)
-{
-	memset(env->spaces, 0, sizeof(env->spaces));
-	env->spaces[' '] = 1;
-	env->spaces['\t'] = 1;
-	env->spaces['\0'] = 1;
-}
-
-void		init_should_len_tab(t_env *env)
-{
-	env->should_len_tab[INTERPRETED] = &len_normal;
-	env->should_len_tab[SIMPLE_QUOTED] = &len_simple_quote;
-	env->should_len_tab[DOUBLE_QUOTED] = &len_double_quote;
-	env->should_len_tab[BACK_QUOTED] = &len_back_quote;
-	env->should_len_tab[BACKSLASHED] = &len_backslash;
-	env->should_len_tab[START_LOCAL_VARIABLE] = &len_value;
 }

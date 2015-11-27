@@ -1,6 +1,6 @@
 #include <interprete.h>
 
-void		interprete_backslash(t_env *env)
+void		interprete_backslash(t_interprete *env)
 {
 	if (env->pos == env->len - 1)
 	{
@@ -16,14 +16,14 @@ void		interprete_backslash(t_env *env)
 	++env->pos;
 }
 
-size_t		len_backslash(t_env *env, size_t *pos)
+size_t		len_backslash(t_interprete *env, size_t *pos)
 {
 	(void)env;
 	++*pos;
 	return (1);
 }
 
-void		extract_backslash(t_env *env, size_t *pos, char **ptr)
+void		extract_backslash(t_interprete *env, size_t *pos, char **ptr)
 {
 	**ptr = env->buffer[*pos];
 	++*ptr;

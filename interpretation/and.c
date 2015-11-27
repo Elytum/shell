@@ -1,6 +1,6 @@
 #include <interprete.h>
 
-void		interprete_and(t_env *env)
+void		interprete_and(t_interprete *env)
 {
 	env->last_token = AND;
 	env->buffer[env->pos] = AND;
