@@ -51,6 +51,7 @@ char		start_interprete(t_interprete *env)
 {
 	env->start = 0;
 	env->last_char = '\0';
+	printf("%li\n", env->len);
 	if (env->len == 0)
 		return (STOP);
 	memcpy(env->buffer, env->line, env->len + 1);

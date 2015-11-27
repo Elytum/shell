@@ -25,10 +25,15 @@ t_env		*init_env(void)
 		free(env);
 		return (ERROR);
 	}
-	memcpy(env->interpretation->pwd, "<PWD VALUE>", sizeof(env->interpretation->pwd));
-	memcpy(env->interpretation->home, "<HOME VALUE>", sizeof(env->interpretation->home));
-	env->interpretation->pwd_len = strlen(env->interpretation->pwd);
-	env->interpretation->home_len = strlen(env->interpretation->home);
+	memcpy(env->pwd, "<PWD VALUE>", sizeof(env->pwd));
+	memcpy(env->home, "<HOME VALUE>", sizeof(env->home));
+	env->pwd_len = strlen(env->pwd);
+	env->home_len = strlen(env->home);
+
+	env->interpretation->pwd = env->pwd;
+	env->interpretation->pwd_len = env->pwd_len;
+	env->interpretation->home = env->home;
+	env->interpretation->home_len = env->home_len;
 	return (env);
 }
 
@@ -104,7 +109,7 @@ int			main(void)
 {
 	t_env	*env;
 	ssize_t	size;
-	
+
 	if ((env = init_env()) == ERROR)
 		return (ERROR_EXIT);
 
@@ -117,13 +122,10 @@ int			main(void)
 	while ((size = get_line(env->intro, env->line, sizeof(env->line))) > 0)
 	{
 		env->multiline = 0;
-
-		/*	TO BE DISCUSSED	*/
 		env->line[sizeof(env->line) - 1] = '\0';
-		// /*TO BE MAYBE REMOVED*/ env->len = size;
-		/*TO BE MAYBE REMOVED*/env->interpretation->len = size - 1;
-		/*	TO BE DISCUSSED	*/
+		env->interpretation->len = size - 1;
 		update_interpretation(env);
+		env->interpretation->len = size - 1;
 		while (start_interprete(env->interpretation) == NOT_CLOSED)
 			subshell(env, &size);
 		if (env->multiline)
@@ -132,41 +134,3 @@ int			main(void)
 	}
 	return (NORMAL_EXIT);
 }
-
-/*
-	*size += tmp;
-	env->len = *size;
-}
-
-int			main(void)
-{
-	t_env	*env;
-	ssize_t	size;
-	t_interprete	bidule;
-
-	printf("%li %li\n", sizeof(bidule.standard_delimiters), sizeof(bidule.spaces));
-	if ((env = init_env()) == ERROR)
-		return (ERROR_EXIT);
-
-	env->start = 0;
-
-	add_local_variable(env, "HOME", "/nfs/zfs-student-3/users/2014/achazal");
-	add_local_variable(env, "PWD", "/nfs/zfs-student-3/users/2014/achazal/tutoSh1/escaping");
-	add_local_variable(env, "PATH", "/nfs/zfs-student-3/users/2014/achazal/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/texbin");
-
-	while ((size = get_line(env->intro, env->line, sizeof(env->line))) > 0)
-	{
-		env->multiline = 0;
-
-		env->line[sizeof(env->line) - 1] = '\0';
-		// TO BE MAYBE REMOVED env->len = size;
-		TO BE MAYBE REMOVEDenv->len = size - 1;
-
-		while (start_interprete(env) == NOT_CLOSED)
-			subshell(env, &size);
-		if (env->multiline)
-			--env->len;
-		launch_command(env);
-	}
-	return (NORMAL_EXIT);
-*/

@@ -20,8 +20,8 @@ typedef struct		s_interprete
 	int				argc;
 	char			error;
 	char			line[_POSIX2_LINE_MAX];
-	char			home[_POSIX_PATH_MAX];
-	char			pwd[_POSIX_PATH_MAX];
+	char			*home;
+	char			*pwd;
 	size_t			pwd_len;
 	size_t			home_len;
 
