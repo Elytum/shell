@@ -133,6 +133,7 @@ int			main(void)
 		if (env->interpretation->len)
 			launch_command(env);
 	}
+	
 	// ht_free(env->alias);
 	// ht_free(env->local_variables);
 	// ht_free(env->builtins);
