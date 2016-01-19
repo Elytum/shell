@@ -127,6 +127,7 @@ void			launch_command(t_env *env)
 	while (42)
 	{
 		memcpy(env->argv, env->interpretation->argv, sizeof(env->argv));
+		env->argc = env->interpretation->argc;
 		handle_alias(env);
 		if ((ret = launch_builtin(env)))
 		{

@@ -130,7 +130,8 @@ int			main(void)
 			subshell(env, &size);
 		if (env->multiline)
 			--env->interpretation->len;
-		launch_command(env);
+		if (env->interpretation->len)
+			launch_command(env);
 	}
 	return (NORMAL_EXIT);
 }
