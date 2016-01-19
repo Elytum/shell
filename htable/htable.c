@@ -68,18 +68,26 @@ entry_t *ht_newpair( char *key, void *value ) {
 	return newpair;
 }
 
+#include <stdio.h>
 void	ht_free(hashtable_t *hashtable)
 {
 	int			i;
 	entry_t		*ptr;
 	entry_t		*next;
 
-	i = hashtable->size;
+	i = 0;
 	while (i < hashtable->size)
 	{
 		if (!(ptr = hashtable->table[i++]))
+		{
+			if (i >= hashtable->size)
+				return ;
 			continue ;
-		while (ptr != NULL && ptr->key != NULL) {
+		}
+		dprintf(1, "\tStart of while with %i\n", i - 1);
+		while (ptr != NULL && ptr->key != NULL)
+		{
+		dprintf(1, "Removing: [%s] [%s]\n", ptr->key, ptr->value);
 			next = ptr->next;
 			free(ptr->key);
 			free(ptr->value);
@@ -97,18 +105,14 @@ void	ht_clear(hashtable_t *hashtable)
 	entry_t		*ptr;
 	entry_t		*next;
 
-	i = hashtable->size;
+	i = hashtable->size; // !!! 0
 	while (i < hashtable->size)
 	{
 		if (!(ptr = hashtable->table[i++]))
 			continue ;
 		next = ptr->next;
 		free(ptr->key);
-		ptr->key = NULL;
 		free(ptr->value);
-		ptr->value = NULL;
-		ptr->next = NULL;
-
 		ptr = next;
 		while (ptr != NULL && ptr->key != NULL) {
 			next = ptr->next;
@@ -211,6 +215,7 @@ void			ht_remove( hashtable_t *hashtable, char *key )
 		free(pair->key);
 		free(pair->value);
 		free(pair);
-		pair = NULL;
+		if (!old)
+			hashtable->table[ bin ] = NULL;
 	}
 }

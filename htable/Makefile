@@ -14,7 +14,7 @@
 
 CC = clang
 NAME = htable.a
-CFLAGS = -Wall -Werror -Wextra -pedantic -I./ -Xclang -fcolor-diagnostics -O3
+CFLAGS = -Wall -Werror -Wextra -pedantic -I./ -Xclang -fcolor-diagnostics -O3 -g
 SOURCE = htable.c
 
 OBJ = $(SOURCE:.c=.o)
